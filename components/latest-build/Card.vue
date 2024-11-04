@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LatestBuildModal } from '#components'
+import { GeneralModal, LatestBuildModal } from '#components'
 
 const { data } = await useFetch('/api/getting-version')
 const { title, version, description } = { ...data.value }
