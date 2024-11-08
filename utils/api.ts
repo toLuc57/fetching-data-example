@@ -1,5 +1,5 @@
 export const feedsInfo = {
-    pamm: { title: 'Pamm', page: 1 },
+    pamm: { title: 'Pamm', icon: 'i-heroicons:presentation-chart-bar', },
     // trader: { title: 'Trader', page: 10 },
     // about: { title: 'About', page: 1 },
 

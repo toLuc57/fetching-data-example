@@ -1,15 +1,11 @@
 <script setup lang="ts">
-const emit = defineEmits(['success', 'close'])
+const emit = defineEmits(['close'])
 
 const props = defineProps<{
     title?: string
-    onSuccess?: () => void
 
 }>()
 
-const onSuccess = props.onSuccess ?? function () {
-    emit('success')
-}
 </script>
 
 <template>
@@ -36,9 +32,6 @@ const onSuccess = props.onSuccess ?? function () {
                 </div>
             </template>
             <slot name="content"></slot>
-            <div class="flex items-center justify-center">
-                <UButton @click="onSuccess">Submit</UButton>
-            </div>
         </UCard>
     </UModal>
 </template>

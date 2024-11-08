@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,10 +7,190 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Version{
+model AverageSpreads {
+  ID         BigInt  @id @default(autoincrement())
+  TimeStamp  BigInt?
+  Duration   Int?
+  BrokerName String? @db.LongText
+  Symbol     String? @db.LongText
+  AvgSpread  Float?
+
+  @@index([Symbol(length: 20)], map: "idx_AverageSpread_Symbol")
+  @@index([TimeStamp], map: "idx_AverageSpread_TimeStamp")
+}
+
+model AverageSpreadsTest {
+  ID         BigInt  @id @default(autoincrement())
+  TimeStamp  BigInt?
+  Duration   Int?
+  BrokerName String? @db.LongText
+  Symbol     String? @db.LongText
+  AvgSpread  Float?
+
+  @@index([Symbol(length: 20)], map: "idx_AverageSpread_Symbol")
+  @@index([TimeStamp], map: "idx_AverageSpread_TimeStamp")
+}
+
+model LiveQuotes {
+  ID         BigInt  @id
+  TimeStamp  BigInt?
+  BrokerName String? @db.LongText
+  Symbol     String? @db.LongText
+  Bid        Float?
+  Ask        Float?
+  Spread     Float?
+  SpreadAvg  Float?
+
+  @@index([Symbol(length: 20)], map: "idx_LiveQuotes_Symbol")
+  @@index([TimeStamp], map: "idx_LiveQuotes_TimeStamp")
+}
+
+model LiveQuotesTest {
+  ID         BigInt  @id
+  TimeStamp  BigInt?
+  BrokerName String? @db.LongText
+  Symbol     String? @db.LongText
+  Bid        Float?
+  Ask        Float?
+  Spread     Float?
+  SpreadAvg  Float?
+
+  @@index([Symbol(length: 20)], map: "idx_LiveQuotes_Symbol")
+  @@index([TimeStamp], map: "idx_LiveQuotes_TimeStamp")
+}
+
+model LivequotesLD {
+  ID         BigInt  @id
+  TimeStamp  BigInt?
+  BrokerName String? @db.VarChar(120)
+  Symbol     String? @db.VarChar(120)
+  Bid        Float?
+  Ask        Float?
+  Spread     Float?
+  SpreadAvg  Float?
+
+  @@index([BrokerName], map: "BrokerName")
+  @@index([Symbol(length: 20)], map: "idx_LivequotesLD_Symbol")
+  @@index([TimeStamp], map: "idx_LivequotesLD_TimeStamp")
+}
+
+model LivequotesNY {
+  ID         BigInt  @id
+  TimeStamp  BigInt?
+  BrokerName String? @db.VarChar(120)
+  Symbol     String? @db.VarChar(120)
+  Bid        Float?
+  Ask        Float?
+  Spread     Float?
+  SpreadAvg  Float?
+
+  @@index([BrokerName], map: "BrokerName")
+  @@index([Symbol(length: 20)], map: "idx_LivequotesNY_Symbol")
+  @@index([TimeStamp], map: "idx_LivequotesNY_TimeStamp")
+}
+
+model LivequotesTY {
+  ID         BigInt  @id
+  TimeStamp  BigInt?
+  BrokerName String? @db.LongText
+  Symbol     String? @db.LongText
+  Bid        Float?
+  Ask        Float?
+  Spread     Float?
+  SpreadAvg  Float?
+
+  @@index([Symbol(length: 20)], map: "idx_LivequotesTY_Symbol")
+  @@index([TimeStamp], map: "idx_LivequotesTY_TimeStamp")
+}
+
+model Logs {
+  ID          BigInt  @id @default(autoincrement())
+  DateTime    BigInt?
+  Level       BigInt?
+  HostName    String? @db.LongText
+  ProcessName String? @db.LongText
+  Source      String? @db.LongText
+  Content     String? @db.LongText
+
+  @@index([DateTime], map: "idx_Logs_DateTime")
+  @@index([HostName(length: 20)], map: "idx_Logs_HostName")
+  @@index([Level], map: "idx_Logs_Level")
+  @@index([ProcessName(length: 20)], map: "idx_Logs_ProcessName")
+  @@index([Source(length: 20)], map: "idx_Logs_Source")
+}
+
+model Symbols {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model SymbolsCFH {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model SymbolsEquity {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model SymbolsFX {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model SymbolsGBE {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model SymbolsPrimeIs {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model SymbolsTest {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model WebFeedSymbols {
+  ID               BigInt   @id @default(autoincrement())
+  currencypairname String?  @db.LongText
+  requestId        String?  @db.LongText
+  Digit            Int?
+  LiveQuotes       Boolean?
+}
+
+model LatestBuild {
   id          Int       @id @default(autoincrement())
-  title       String    @db.VarChar(255)
-  version     String    @db.VarChar(255)
-  description String    @db.VarChar(255)
-  createAt    DateTime  @default(now()) @db.Timestamp(0)
+  title       String?
+  version     String?
+  description String?   @db.VarChar(255)
+  createAt    DateTime? @default(now()) @db.DateTime(0)
+  updateAt    DateTime? @default(now()) @db.DateTime(0)
+  releasedAt  String?   @db.VarChar(45)
+
+  @@map("latest_build")
 }

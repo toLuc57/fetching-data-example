@@ -3,14 +3,14 @@ import { GeneralModal } from '#components'
 const props = defineProps<{
     title?: string
     data: any
-    lastConfig?: any
+    lastConfigModal?: () => void
     buttons?: any
-    function?: () => void
+    modal?: () => void
 }>()
 
 const modal = useModal()
 const toast = useToast()
-const openModal = props.function ?? function () {
+const openModal = props.modal ?? function () {
     console.log('Open ModalCard')
     modal.open(GeneralModal, {
         onSuccess() {
@@ -18,6 +18,7 @@ const openModal = props.function ?? function () {
                 title: 'Success !',
                 id: 'modal-success'
             })
+            modal.close()
         },
         onClose() {
             toast.add({
@@ -47,13 +48,14 @@ const openModal = props.function ?? function () {
                 <b style="text-transform: capitalize;">{{ key }}: </b>
                 <span>{{ value }}</span>
             </div>
-            <div v-if="props.lastConfig" class="flex">
+            <div v-if="props.lastConfigModal" class="flex items-center space-x-1">
                 <b>Last configuration:</b>
                 <UButton
                     color="blue"
                     variant="ghost"
                     icon="i-heroicons:eye-solid"
                     class="-my-1"
+                    @click="props.lastConfigModal"
                 />
             </div>
         </div>
@@ -62,8 +64,7 @@ const openModal = props.function ?? function () {
                 v-for="btn in props.buttons.values()"
                 class="card-button"
                 :key="btn.label"
-                :to="`${btn.link}`"
-                target="_blank"
+                @click="btn.onClick"
             >
                 {{ btn.label }}
             </UButton>

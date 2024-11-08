@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { GeneralModal, LatestBuildModal } from '#components'
 
-const { data } = await useFetch('/api/getting-version')
-const { title, version, description } = { ...data.value }
+const { data } = await useFetch('/api/get-latest-build')
+const { title, version, description, releasedAt } = { ...data.value }
 
 const toast = useToast()
 const modal = useModal()
@@ -10,16 +10,22 @@ const modal = useModal()
 
 <template>
     <GeneralCard 
-        :data="{ version, description }" 
+        :data="{ 
+            version, 
+            description, 
+            'Released At': releasedAt,
+        }" 
         :title="title" 
         :buttons="
             [
                 {
                     label: 'Check now',
-                    link: 'https://github.com/Pammboo2/Pammboo2/releases',
+                    onClick: function() {
+                        console.log('Handle Check now')
+                    },
                 },
             ]"
-        :function="function() {
+        :modal="function() {
             console.log('Open LatestBuildModal')
             modal.open(LatestBuildModal, {
                 onSuccess() {
@@ -27,6 +33,7 @@ const modal = useModal()
                         title: 'Success !',
                         id: 'last-build-modal-success'
                     })
+                    modal.close()
                 },
                 onClose() {
                     toast.add({

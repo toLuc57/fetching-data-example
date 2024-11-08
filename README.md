@@ -73,3 +73,22 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Prisma
+
+### Setup
+
+1. **Pull the Schema**: To pull the schema from your database, run:
+    ```bash
+    npx prisma db pull
+    ```
+
+2. **Generate Prisma Client**: After pulling the schema, you need to generate the Prisma Client to interact with your database:
+    ```bash
+    npx prisma generate
+    ```
+
+3. **Open Prisma Studio**: To visualize and interact with your database, you can use Prisma Studio:
+    ```bash
+    npx prisma studio
+    ```

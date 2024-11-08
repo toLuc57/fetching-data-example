@@ -29,6 +29,7 @@ const isDark = computed({
             :key="key"
             :to="`/${key}`"
         >
+            <UIcon :name="list.icon" />
             {{ list.title }}
         </NuxtLink>
         <UButton 
