@@ -13,11 +13,20 @@ interface Settings {
 export interface AvgSpreads {
     settings: Settings
     gbeBrokers: string[]
-    outputTables: string[]
+    otherBrokers: string[]
 }
 
 export interface AvgSpreadsResponse 
-    extends Omit<AvgSpreads, 'gbeBrokers' | 'outputTables'> {
+    extends Omit<AvgSpreads, 'gbeBrokers' | 'otherBrokers'> {
         gbeBrokers: string
-        outputTables: string
+        otherBrokers: string
     }
+
+//Type of Report
+export interface ReportParams {
+    brokersHeader: string[]
+    otherBrokers: string[]
+    symbolsHeader: string[]
+    // avgSpread[symbol][broker]
+    avgSpread: Record<string, Record<string, { value: number, isMin: boolean }>>
+}

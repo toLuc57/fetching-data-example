@@ -10,14 +10,15 @@ const toast = useToast()
         :title="'Average Spread'" 
         :data="
         {
-            'Date': '2022-12-12 12:12:12',
+            'Date': {text: '2022-12-12'},
+
         }"
         :buttons="
             [
                 {
                     label: 'Generate', 
-                    onClick: function() {
-                        console.log('Handle Generate')
+                    onClick: async function() {
+                        await navigateTo('/average-spreads')
                     },
                 },
                 {

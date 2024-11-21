@@ -2,6 +2,13 @@
 import { GeneralModal, ReportGeneratorModal } from '#components'
 const modal = useModal()
 const toast = useToast()
+
+const reportStatus = ref('Success')
+const reportStatusClass = computed(() => {
+    if(reportStatus.value === 'Success') return 'text-green-600 dark:text-green-400'
+    if(reportStatus.value === 'Error') return 'text-red-600 dark:text-red-400'
+    return ''
+})
 </script>
 
 <template>
@@ -9,9 +16,8 @@ const toast = useToast()
         :title="'Statement Generator'" 
         :data="
         {
-            'Report date': '2022-12-12 12:12:12',
-            'Report status': 'Success',
-            'Report error': 'No error',
+            'Report date': {text: '2022-12-12 12:12:12'},
+            'Report status': {text: reportStatus, class: reportStatusClass},
         }"
         :last-config-modal="function() {
             console.log('Open GeneralModal')
@@ -36,13 +42,13 @@ const toast = useToast()
                 {
                     label: 'Generate', 
                     onClick: function() {
-                        console.log('Handle Generate')
+                        console.log('Generate')
                     },
                 },
                 {
                     label: 'Download Lastest Report', 
                     onClick: function() {
-                        console.log('Handle Download Lastest Report')
+                        console.log('Handle Download Latest Report')
                     },
                 },
             ]"

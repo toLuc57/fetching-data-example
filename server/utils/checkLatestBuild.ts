@@ -26,7 +26,7 @@ export async function checkLatestBuild(){
                     id: getRecord?.id
                 },
                 data: {
-                    createAt: new Date(),
+                    updateAt: new Date(),
                 },
             })
             logger.log({level: 'info', message: `No new build version found.`});

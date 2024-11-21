@@ -11,11 +11,11 @@ const modal = useModal()
 <template>
     <GeneralCard 
         :data="{ 
-            version, 
-            description, 
-            'Released At': releasedAt,
+            version : { text: version }, 
+            description : {text: description}, 
+            'Released At': {text: releasedAt},
         }" 
-        :title="title" 
+        :title="title!"
         :buttons="
             [
                 {

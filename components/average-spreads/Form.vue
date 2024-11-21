@@ -5,51 +5,57 @@ const props = defineProps<{
     isReadOnly: boolean
 }>()
 
-const defaultConfig: AvgSpreadsResponse = {
-    gbeBrokers: 'GBETY, GBELD, GBENY, GBPCHF',
-    outputTables: 'GBPJPY, USDCAD',
+const defaultAvgSpreads: AvgSpreadsResponse = {
+    gbeBrokers: '',
+    otherBrokers: '',
     settings: {
         trainingDayBeginAt: -1,
-        exportNonGBEBrokers: true,
-        tradingSessions: [
-            {
-                name: "Asian",
-                timeBeginAt: "01:00",
-                timeEndAt: "09:00",
-            },
-            {
-                name: "London",
-                timeBeginAt: "09:00",
-                timeEndAt: "17:00",
-            },
-            {
-                name: "New York",
-                timeBeginAt: "15:00",
-                timeEndAt: "23:00",
-            },
-        ],
+        exportNonGBEBrokers: false,
+        tradingSessions: [],
     }
 }
 
-const formData = ref<AvgSpreadsResponse>(defaultConfig);
-
+const {data: avgSpreads} = await useFetch('/api/generator-avg-spreads', {
+    transform: (data) => data.value
+})
+const formData = ref<AvgSpreadsResponse>(
+    !!avgSpreads.value ? avgSpreads.value : defaultAvgSpreads
+)
 const validate = (state: AvgSpreadsResponse) => {
     const errors = []
     if(!state)
         errors.push({path: 'settings', message: 'Settings is required'})
 
+    if(!state.settings.trainingDayBeginAt)
+        errors.push({path: 'settings.trainingDayBeginAt', message: 'Training Day Begin At is required'})
+    else if(state.settings.trainingDayBeginAt >= 0)
+        errors.push({path: 'settings.trainingDayBeginAt', message: 'Training Day Begin At must be less than 0'})
+    
     return errors
 }
 
 const handleAddTradingSession = () => {
-    formData.value.settings.tradingSessions.push(
-        {name: '', 
+    formData.value.settings.tradingSessions.push({
+        name: '', 
         timeBeginAt: '', 
         timeEndAt: '',
     })
 }
 const handleDeleteTradingSession = (index: number) => {
     formData.value.settings.tradingSessions.splice(index, 1)
+}
+
+const emit = defineEmits(['success'])
+const submitForm = async (event: any) => {
+    event.preventDefault()
+    
+    await $fetch('/api/generator-avg-spreads', {
+        method: 'POST',
+        body: JSON.stringify({...formData.value}),
+    })
+    .then(() => {
+        emit('success')
+    })
 }
 </script>
 
@@ -58,6 +64,7 @@ const handleDeleteTradingSession = (index: number) => {
         <UForm
             :validate="validate"
             :state="formData"
+            @submit="submitForm"
             class="space-y-5"
         >
             <UFormGroup name="gbeBrokers" label="GBE Brokers">
@@ -69,10 +76,10 @@ const handleDeleteTradingSession = (index: number) => {
                 />
             </UFormGroup>
 
-            <UFormGroup name="outputTables" label="Output Tables">
+            <UFormGroup name="otherBrokers" label="Other Broker">
                 <UTextarea
-                    v-model="formData.outputTables"
-                    placeholder="Enter Output Tables"
+                    v-model="formData.otherBrokers"
+                    placeholder="Enter Other Brokers"
                     :disabled="props.isReadOnly"
                     :rows="5"
                 />
@@ -116,7 +123,7 @@ const handleDeleteTradingSession = (index: number) => {
             />
 
             <div class="flex items-center justify-center">
-                <UButton @click="$emit('close')">Submit</UButton>
+                <UButton type="submit" :disabled="props.isReadOnly">Submit</UButton>
             </div>
         </UForm>
     </div>

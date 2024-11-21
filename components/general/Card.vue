@@ -13,13 +13,6 @@ const toast = useToast()
 const openModal = props.modal ?? function () {
     console.log('Open ModalCard')
     modal.open(GeneralModal, {
-        onSuccess() {
-            toast.add({
-                title: 'Success !',
-                id: 'modal-success'
-            })
-            modal.close()
-        },
         onClose() {
             toast.add({
                 title: 'Close !',
@@ -46,7 +39,7 @@ const openModal = props.modal ?? function () {
         <div class="mt-3">
             <div v-for="(value, key) in props.data">
                 <b style="text-transform: capitalize;">{{ key }}: </b>
-                <span>{{ value }}</span>
+                <span :class="value.class ?? ''">{{ value.text }}</span>
             </div>
             <div v-if="props.lastConfigModal" class="flex items-center space-x-1">
                 <b>Last configuration:</b>
@@ -62,7 +55,7 @@ const openModal = props.modal ?? function () {
         <div v-if="props.buttons" class="flex items-center justify-between mt-3">
             <UButton 
                 v-for="btn in props.buttons.values()"
-                class="card-button"
+                class="even:bg-gray-500 even:dark:bg-white even:hover:bg-gray-700 even:hover:dark:bg-gray-200"
                 :key="btn.label"
                 @click="btn.onClick"
             >
@@ -74,12 +67,3 @@ const openModal = props.modal ?? function () {
         <div>Loading <Icon name="i-svg-spinners:180-ring-with-bg"/></div>
     </div>
 </template>
-
-<style lang="css">
-.card-button {
-    &:nth-child(even) {
-        background-color: #3c3c3c;
-        color: #f3f4f6;
-    }
-}
-</style>

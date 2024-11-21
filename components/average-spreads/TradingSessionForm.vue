@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TradingSessions } from '~/types/averageSpreadsTypes';
 const props = defineProps<{
     isReadOnly: boolean
     tradingSessions: TradingSessions[]
@@ -9,7 +10,7 @@ defineEmits(['on-remove'])
 <template>
     <div 
         v-for="(tradingSession, index) in props.tradingSessions"
-        :key="tradingSession.name"
+        :key="index"
         class="space-y-2 p-2"
     >
         <div class="flex items-center justify-between">
@@ -22,7 +23,7 @@ defineEmits(['on-remove'])
                     <UInput
                         type="text"
                         v-model="tradingSession.name"
-                        :disabled="props.isReadOnly"                        
+                        :disabled="props.isReadOnly"
                     />
                 </UFormGroup>
                 <UFormGroup
@@ -31,6 +32,7 @@ defineEmits(['on-remove'])
                     class="w-20"
                 >
                     <UInput
+                        type="text"
                         v-model="tradingSession.timeBeginAt"
                         :disabled="props.isReadOnly"
                     />
@@ -41,6 +43,7 @@ defineEmits(['on-remove'])
                     class="w-20"
                 >
                     <UInput
+                        type="text"
                         v-model="tradingSession.timeEndAt"
                         :disabled="props.isReadOnly"
                     />

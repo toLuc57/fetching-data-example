@@ -3,9 +3,11 @@ const emit = defineEmits(['close'])
 
 const props = defineProps<{
     title?: string
-
 }>()
 
+const onClose = () => {
+    emit('close')
+}
 </script>
 
 <template>
@@ -27,7 +29,7 @@ const props = defineProps<{
                         color="gray"
                         cursor="pointer"
                         class="-my-1"
-                        @click="emit('close')"
+                        @click="onClose"
                     />
                 </div>
             </template>
