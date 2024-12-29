@@ -11,17 +11,20 @@
   },
   "dependencies": {
     "@nuxt/ui": "^2.18.7",
+    "@popperjs/core": "^2.11.8",
     "@prisma/client": "^5.21.1",
     "axios": "^1.7.7",
     "cheerio": "^1.0.0",
+    "date-fns": "^2.30.0",
     "i": "^0.3.7",
     "ini": "^5.0.0",
     "npm": "^10.9.0",
     "nuxt": "^3.13.2",
+    "v-calendar": "^3.1.2",
     "vue": "latest",
     "vue-router": "latest",
     "winston": "^3.15.0",
-    "xlsx": "^0.18.5"
+    "xlsx-js-style": "^1.2.0"
   },
   "devDependencies": {
     "@types/ini": "^4.1.1",

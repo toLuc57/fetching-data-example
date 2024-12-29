@@ -49,11 +49,7 @@ export function parseCustomTimestamp(timestamp: string) {
     //YYYY-MM-DD HH:mm:ss.SSS
     const year = Number(timestamp.slice(0, 4));
     const month = Number(timestamp.slice(4, 6)) - 1;
-    const day = Number(timestamp.slice(6, 8));
-    const hour = Number(timestamp.slice(8, 10));
-    const minute = Number(timestamp.slice(10, 12));
-    const second = Number(timestamp.slice(12, 14));
-    const millisecond = Number(timestamp.slice(14, 17));
+    const date = Number(timestamp.slice(6, 8));
 
-    return new Date(year, month, day, hour, minute, second, millisecond);
+    return new Date(Date.UTC(year, month, date));
 }

@@ -10,20 +10,48 @@ const reportIndex = ref<string>(
 )
 
 const report = computed(() => props.reports[reportIndex.value])
+
+const downloadReport = async(event: any) => {
+    event.preventDefault()
+
+    await useFetch(`/api/generator-avg-spreads-report`, { 
+        method: 'POST',
+        body: {
+            title: props.title,
+            reports: props.reports
+        }
+    }).then(() => {
+        console.log('Downloaded report successfully')
+        alert('Report downloaded successfully')
+    })
+}
 </script>
 
 <template>
     <div v-if="!reports || Object.keys(reports).length === 0" class="text-center">No reports :&#40;</div>
     <div v-else>
-        <h2 class="mb-2 text-xl text-center">{{ title }}</h2>
-        <div class="flex flex-wrap items-center justify-center gap-2 mb-2">
-            <UButton v-for="(value, key) in reports" 
-                class="bg-gray-500 dark:bg-white hover:bg-gray-700 hover:dark:bg-gray-200"
-                :class="reportIndex === key ? 'bg-green-500 dark:bg-green-400 underline' : ''"
-                @click="reportIndex = key"
-            >
-                {{ key }}
-            </UButton>
+        <div class="flex flex-col items-center justify-center gap-2 mb-2">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl text-center">{{ title }}</span>
+                    <UButton 
+                        icon="i-heroicons:arrow-down-tray-solid" 
+                        variant="ghost"
+                        class="my-1" 
+                        :class="'text-gray-700 dark:text-white'"
+                        @click="downloadReport"
+                    />
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <UButton v-for="(value, key) in reports" 
+                    class="bg-gray-500 dark:bg-white hover:bg-gray-700 hover:dark:bg-gray-200"
+                    :class="reportIndex === key ? 'bg-green-500 dark:bg-green-400 underline' : ''"
+                    @click="reportIndex = key"
+                >
+                    {{ key }}
+                </UButton>
+            </div>
         </div>
         <div>
             <table class="table w-full text-center text-sm border-collapse border border-slate-400">

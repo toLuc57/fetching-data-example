@@ -1,6 +1,6 @@
 import { logger } from "../model"
 import { checkLatestBuild } from "./checkLatestBuild"
-import { checkAvgSpreadsExcelInit } from "./checkAvgSpreadsExcelInit"
+import { checkAvgSpreadsExcelIni } from "./checkAvgSpreadsExcelIni"
 
 export async function setupCronJobs() {
     try {
@@ -8,9 +8,9 @@ export async function setupCronJobs() {
         await checkLatestBuild()
         logger.info(`Checking latest build successfully`)
 
-        logger.info(`Starting checking avg spreads excel init`)
-        await checkAvgSpreadsExcelInit()
-        logger.info(`Done checking avg spreads excel init`)
+        logger.info(`Starting checking avg spreads excel ini`)
+        await checkAvgSpreadsExcelIni()
+        logger.info(`Done checking avg spreads excel ini`)
         // Something else
     } catch (e) {
         throw e

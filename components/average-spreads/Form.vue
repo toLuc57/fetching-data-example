@@ -45,13 +45,14 @@ const handleDeleteTradingSession = (index: number) => {
     formData.value.settings.tradingSessions.splice(index, 1)
 }
 
+const date = ref(new Date())
 const emit = defineEmits(['success'])
 const submitForm = async (event: any) => {
     event.preventDefault()
     
     await $fetch('/api/generator-avg-spreads', {
         method: 'POST',
-        body: JSON.stringify({...formData.value}),
+        body: JSON.stringify({...formData.value, date: date.value}),
     })
     .then(() => {
         emit('success')
@@ -67,6 +68,10 @@ const submitForm = async (event: any) => {
             @submit="submitForm"
             class="space-y-5"
         >
+            <UFormGroup name="date" label="Date">
+                <GeneralPbDayPicker v-model="date"/>
+            </UFormGroup>
+
             <UFormGroup name="gbeBrokers" label="GBE Brokers">
                 <UTextarea
                     v-model="formData.gbeBrokers"

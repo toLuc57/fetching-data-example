@@ -20,7 +20,6 @@ const reportStatusClass = computed(() => {
             'Report status': {text: reportStatus, class: reportStatusClass},
         }"
         :last-config-modal="function() {
-            console.log('Open GeneralModal')
             modal.open(GeneralModal, {
                 onSuccess() {
                     toast.add({
@@ -41,12 +40,14 @@ const reportStatusClass = computed(() => {
             [
                 {
                     label: 'Generate', 
+                    disabled: false,
                     onClick: function() {
                         console.log('Generate')
                     },
                 },
                 {
-                    label: 'Download Lastest Report', 
+                    label: 'Download Latest Report', 
+                    disabled: false,
                     onClick: function() {
                         console.log('Handle Download Latest Report')
                     },

@@ -1,9 +1,7 @@
 import fs from 'fs'
 import { logger } from "../model"
-import { readFile } from "fs/promises"
-import ini from 'ini'
 
-export async function checkAvgSpreadsExcelInit() {
+export async function checkAvgSpreadsExcelIni() {
     // Create ini file if not exist
     if (!fs.existsSync('./public/avg-spreads-excel-report.ini')) {
         fs.writeFile('./public/avg-spreads-excel-report.ini', '', () => {});

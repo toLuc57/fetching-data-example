@@ -10,6 +10,11 @@ export default defineEventHandler(async (event) => {
             encoding : 'utf-8'
         })
         const config = ini.parse(text)
+
+        
+        if(Object.keys(config).length === 0) 
+            throw createError({ status: 400, message: "Please set the config first!" })
+
         // If config.gbeBrokers is empty, it will be set to default value (GBELD, GBENY, GBETY)
         const brokersHeader = (config.GBEBrokers ? extractString(config.GBEBrokers) : 'GBELD, GBENY, GBETY').split(', ')
         // If config.otherBrokers is empty, it will be set to default value (get all from database)
@@ -24,7 +29,7 @@ export default defineEventHandler(async (event) => {
         // const outputTables = config.OutputTables ? extractString(config.OutputTables).split(', ') : []
         
         const symbolsHeader: string[] = []
-        const day = '20241105'
+        const day = (config.Settings.Date ?? '2024-11-05').replace(/-/g, '');
         
         const reports : Record<string, ReportParams> = {}
         for(const tradingSession of (extractTradingSessions(config.Settings))){
@@ -50,32 +55,35 @@ export default defineEventHandler(async (event) => {
                 },
             })
             
+            const minArr: Map<string, { value: number, broker: string}> = new Map()
             // Add avgSpread to avgSpread
             for (const record of records) {
                 if(record.Symbol === null || record.BrokerName === null) continue
                 
                 symbolsHeader.push(record.Symbol)
-                var min = Infinity
                 if (!avgSpread[record.Symbol]) 
                     avgSpread[record.Symbol!] = {}
-                else {
-                    let minBrokerInSymbol = ''
-                    for (const key in avgSpread[record.Symbol]) {
-                        if (avgSpread[record.Symbol][key].value < min) {
-                            minBrokerInSymbol = key
-                            min = avgSpread[record.Symbol][key].value
-                            avgSpread[record.Symbol][key].isMin = false
-                        }
-                    }
-                    avgSpread[record.Symbol][minBrokerInSymbol].isMin = true
-                }
     
                 avgSpread[record.Symbol][record.BrokerName] = {
-                    value: record._avg.AvgSpread ? record._avg.AvgSpread : Infinity,
+                    value: record._avg.AvgSpread || Infinity,
                     isMin: false,
                 }
+                if(
+                    minArr.has(record.Symbol) 
+                    && minArr.get(record.Symbol)!.value <= avgSpread[record.Symbol][record.BrokerName].value
+                )
+                    continue
+                
+                minArr.set(record.Symbol, {
+                    value: avgSpread[record.Symbol][record.BrokerName].value,
+                    broker: record.BrokerName
+                })
             }
-
+            // Set isMin to true for all symbols
+            for(const symbol of symbolsHeader) 
+                if(minArr.has(symbol)) 
+                    avgSpread[symbol][minArr.get(symbol)!.broker].isMin = true
+            
             reports[tradingSession.name] = {
                 brokersHeader,
                 otherBrokers,
@@ -86,7 +94,7 @@ export default defineEventHandler(async (event) => {
         
         return {
             reports,
-            day: day.slice(0, 4) + '-' + day.slice(4, 6) + '-' + day.slice(6, 8),
+            day: parseCustomTimestamp(day),
             message: 'Success'
         }
     } catch (e) {

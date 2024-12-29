@@ -20,13 +20,13 @@ const modal = useModal()
             [
                 {
                     label: 'Check now',
+                    disabled: false,
                     onClick: function() {
                         console.log('Handle Check now')
                     },
                 },
             ]"
         :modal="function() {
-            console.log('Open LatestBuildModal')
             modal.open(LatestBuildModal, {
                 onSuccess() {
                     toast.add({

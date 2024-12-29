@@ -10,11 +10,12 @@ export default defineEventHandler(async (event) => {
         const body = await readBody(event)
 
         if (!body) throw createError({ status: 400, message: "Invalid body" })
-        
-        console.log(body)
+
         logger.info('Write/Update avg-spreads-excel-report.ini file')
+        const date = body.date.split('T')[0];
         const config: Config = {
             Settings: {
+                Date: date,
                 TradingDayBeginsAt: body.settings.trainingDayBeginAt,
                 ExportNonGBE: body.settings.exportNonGBEBrokers ? 'true' : 'false',
                 LogLevel: 'Emergency',
@@ -33,6 +34,7 @@ export default defineEventHandler(async (event) => {
         for(const key of extractArray(body.otherBrokers)) {
             config.OtherBrokers[key] = ''
         }
+
         const text = ini.stringify(config)
         await writeFile('./public/avg-spreads-excel-report.ini', text)
         logger.info('Write/Update avg-spreads-excel-report.ini file successfully')

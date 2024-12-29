@@ -25,7 +25,7 @@ const openModal = props.modal ?? function () {
 </script>
 
 <template>
-    <div class="flex flex-col justify-between sm:col-span-6 md:col-span-4 rounded-lg ring-2 dark:ring-gray-100 light:ring-gray-800 p-4" v-if="props && props.title" :key="props.title">
+    <div class="flex flex-col justify-between col-span-2 md:col-span-4 rounded-lg ring-2 dark:ring-gray-100 light:ring-gray-800 p-4" v-if="props && props.title" :key="props.title">
         <div class="flex items-center justify-between mt-3">
             <h2 class="text-xl font-bold">{{ props.title ?? 'No title' }}</h2>
             <UButton 
@@ -55,9 +55,10 @@ const openModal = props.modal ?? function () {
         <div v-if="props.buttons" class="flex items-center justify-between mt-3">
             <UButton 
                 v-for="btn in props.buttons.values()"
-                class="even:bg-gray-500 even:dark:bg-white even:hover:bg-gray-700 even:hover:dark:bg-gray-200"
+                class="even:bg-gray-500 even:dark:bg-white even:hover:bg-gray-700 even:hover:dark:bg-gray-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 :key="btn.label"
                 @click="btn.onClick"
+                :disabled="btn.disabled"
             >
                 {{ btn.label }}
             </UButton>

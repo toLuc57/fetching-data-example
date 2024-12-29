@@ -109,7 +109,7 @@ const validate = (state: GeneratorConfigResponse) => {
             >
                 <UInput
                     type="text"
-                    v-model="formData.bcc"
+                    v-model="formData.bbc"
                     :disabled="props.isReadOnly"                    
                 />
             </UFormGroup>

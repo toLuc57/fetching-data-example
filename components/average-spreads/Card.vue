@@ -3,6 +3,11 @@ import { AverageSpreadsModal } from '#components';
 
 const modal = useModal()
 const toast = useToast()
+
+const disabled = ref<boolean>(
+    1 < 3 ? false : true
+)
+
 </script>
 
 <template>
@@ -10,8 +15,7 @@ const toast = useToast()
         :title="'Average Spread'" 
         :data="
         {
-            'Date': {text: '2022-12-12'},
-
+            'Date': {text: 'GeneralPbDayPicker'},
         }"
         :buttons="
             [
@@ -20,12 +24,14 @@ const toast = useToast()
                     onClick: async function() {
                         await navigateTo('/average-spreads')
                     },
+                    disabled,
                 },
                 {
-                    label: 'View Lastest Report', 
+                    label: 'Download Latest Report', 
                     onClick: function() {
-                        console.log('Handle View Lastest Report')
+                        console.log('Handle View Latest Report')
                     },
+                    disabled: true,
                 },
             ]"
         :modal="function() {
